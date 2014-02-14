@@ -26,4 +26,4 @@ Zabbix is an enterprise-class open source distributed monitoring solution for ne
 
 * https://www.zabbix.com/documentation/2.0/manual/installation/install_from_packages
 * https://github.com/pengyao/salt-zabbix/tree/master/salt/zabbix
-* https://forge.puppetlabs.com/softek/zabbixagent
+* https://github.com/czhujer/puppet-zabbixagent
