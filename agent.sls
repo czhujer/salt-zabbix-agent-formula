@@ -57,7 +57,7 @@ zabbix_agent_packages:
 zabbix_agent_config:
   file.managed:
   - name: /etc/zabbix_agentd.conf
-  - source: salt://zabbix/files/etc/zabbix_agentd.conf
+  - source: salt://zabbix/conf/zabbix_agentd.conf
   - template: jinja
   - require:
     - pkg: zabbix_agent_packages
