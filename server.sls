@@ -1,4 +1,3 @@
-{%- if pillar.zabbix.agent.enabled %}
-
+{%- if pillar.zabbix.server.enabled %}
 
 {%- endif %}
