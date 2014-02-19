@@ -16,7 +16,7 @@
 
 zabbix_agent_absent_packages:
   pkg.absent:
-  - names: zabbix_packages_absent
+  - names: {{ zabbix_packages_absent }}
 
 zabbix_agent_packages:
   pkg.installed:
