@@ -21,8 +21,6 @@ zabbix_agent_absent_packages:
 zabbix_agent_packages:
   pkg.installed:
   - name: {{ zabbix_package_present }}
-  - require:
-    - pkg: zabbix_agent_absent_packages
 
 {%- endif %}
 
