@@ -7,11 +7,11 @@
 {%- if grains.os_family == "RedHat" %}
 
 {% if version == '2' %}
-{% zabbix_package_present = 'zabbix20-agent' %}
-{% zabbix_packages_absent = ['zabbix-agent', 'zabbix'] %}
+{% set zabbix_package_present = 'zabbix20-agent' %}
+{% set zabbix_packages_absent = ['zabbix-agent', 'zabbix'] %}
 {% else %}
-{% zabbix_package_present = 'zabbix-agent' %}
-{% zabbix_packages_absent = ['zabbix20-agent', 'zabbix20'] %}
+{% set zabbix_package_present = 'zabbix-agent' %}
+{% set zabbix_packages_absent = ['zabbix20-agent', 'zabbix20'] %}
 {% endif %}
 
 zabbix_agent_absent_packages:
