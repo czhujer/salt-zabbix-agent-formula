@@ -75,9 +75,11 @@ zabbix_user:
   - system: True
   - home: /var/lib/zabbix
 
-zabbix_log_dir:
+zabbix_dirs:
   file.directory:
-  - name: /var/log/zabbix
+  - names:
+    - /var/log/zabbix
+    - /var/run/zabbix
   - user: zabbix
   - makedirs: true
   - require:
@@ -88,7 +90,7 @@ zabbix_agent_service:
   - name: zabbix-agent
   - enable: True
   - require:
-    - file: zabbix_log_dir
+    - file: zabbix_dirs
   - watch:
     - file: zabbix_agent_config
 
