@@ -62,18 +62,19 @@ zabbix_agent_config:
   - require:
     - pkg: zabbix_agent_packages
 
+zabbix_agentd.conf.d:
+  file.directory:
+  - name: /etc/zabbix/zabbix_agentd.conf.d
+  - makedirs: true
+  - require:
+    - pkg: zabbix_agent_packages
+
 zabbix_agent_service:
   service.running:
   - name: zabbix-agent
   - enable: True
   - watch:
     - file: zabbix_agent_config
-
-zabbix_agentd.conf.d:
-  file.directory:
-  - name: /etc/zabbix/zabbix_agentd.conf.d
-  - require:
-    - service: zabbix-agent
 
 {%- else %}
 

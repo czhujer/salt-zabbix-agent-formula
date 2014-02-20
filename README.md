@@ -10,6 +10,9 @@ Zabbix is an enterprise-class open source distributed monitoring solution for ne
     zabbix:
       agent:
         enabled: true
+        server:
+          host: 10.0.0.20
+          port: ...
 
 ### Sample pillar of Zabbix server
 
