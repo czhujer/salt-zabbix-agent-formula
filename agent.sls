@@ -40,9 +40,9 @@ zabbix_package_download:
 zabbix_agent_packages:
   pkg.installed:
   - sources:
-    - vagrant: /root/{{ zabbix_base_file }}
+    - zabbix: /root/{{ zabbix_base_file }}
   - require:
-    - cmd: zabbix_download_package
+    - cmd: zabbix_package_download
 
 {% else %}
 
