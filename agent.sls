@@ -40,7 +40,7 @@ zabbix_package_download:
 zabbix_agent_packages:
   pkg.installed:
   - sources:
-    - zabbix: /root/{{ zabbix_base_file }}
+    - zabbix-release: /root/{{ zabbix_base_file }}
   - require:
     - cmd: zabbix_package_download
 
