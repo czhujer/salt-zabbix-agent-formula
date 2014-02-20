@@ -15,7 +15,7 @@
 {% endif %}
 
 zabbix_agent_absent_packages:
-  pkg.absent:
+  pkg.removed:
   - names: {{ zabbix_packages_absent }}
 
 zabbix_agent_packages:
@@ -95,7 +95,7 @@ zabbix_agent_service:
 {%- else %}
 
 zabbix_agent_packages:
-  pkg.absent:
+  pkg.removed:
   - names:
     - zabbix20-agent
     - zabbix20
