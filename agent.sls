@@ -6,7 +6,7 @@
 
 {%- if grains.os_family == "RedHat" %}
 
-{% set zabbix_agent_config == '/etc/zabbix_agentd.conf' %}
+{% set zabbix_agent_config = '/etc/zabbix_agentd.conf' %}
 
 {% if version == '2' %}
 {% set zabbix_package_present = 'zabbix20-agent' %}
@@ -28,8 +28,7 @@ zabbix_agent_packages:
 
 {%- if grains.os_family == "Debian" %}
 
-{% set zabbix_agent_config == '/etc/zabbix/zabbix_agentd.conf' %}
-
+{% set zabbix_agent_config = '/etc/zabbix/zabbix_agentd.conf' %}
 
 {% if version == '2' %}
 
