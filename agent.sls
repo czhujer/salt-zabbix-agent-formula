@@ -107,7 +107,7 @@ zabbix_agent_download:
   file.managed:
   - name: C:/zabbix_agents_{{ zabbix_agent_version }}.win.zip
   - source: http://www.zabbix.com/downloads/{{ zabbix_agent_version }}/zabbix_agents_{{ zabbix_agent_version }}.win.zip
-  - source_hash: {{ zabbix_agent_source_hash }}+md5
+  - source_hash: {{ zabbix_agent_source_hash }}
 
 zabbix_agent_service_install:
   cmd.run:
