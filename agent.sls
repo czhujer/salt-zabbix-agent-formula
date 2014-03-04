@@ -91,10 +91,10 @@ zabbix_agent_service:
 
 {% if version == '2' %}
 {% set zabbix_agent_version = '2.0.10' %}
-{% set zabbix_agent_source_hash = '3c18e6d659f15bf3970bea65d1e1dd22' %}
+{% set zabbix_agent_source_hash = 'md5=3c18e6d659f15bf3970bea65d1e1dd22' %}
 {% else %}
 {% set zabbix_agent_version = '1.8.19' %}
-{% set zabbix_agent_source_hash = '3eafd5287866898a4ce3701091178e2e' %}
+{% set zabbix_agent_source_hash = 'md5=3eafd5287866898a4ce3701091178e2e' %}
 {% endif %}
 
 zabbix_agent_config:
