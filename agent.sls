@@ -32,8 +32,8 @@ zabbix_agent_repo:
   pkgrepo.managed:
   - human_name: Zabbix
   - names:
-    - deb http://repo.zabbix.com/zabbix/2.0/ubuntu precise main
-    - deb-src http://repo.zabbix.com/zabbix/2.0/ubuntu precise main
+    - deb http://repo.zabbix.com/zabbix/2.0/ubuntu {{ grains.oscodename }} main
+    - deb-src http://repo.zabbix.com/zabbix/2.0/ubuntu {{ grains.oscodename }} main
   - file: /etc/apt/sources.list.d/zabbix.list
   - key_url: salt://zabbix/conf/zabbix-apt.gpg
 
