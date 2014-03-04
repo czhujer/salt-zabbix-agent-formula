@@ -2,20 +2,20 @@
 
 zabbix-server:
   pkg.installed:
-    - pkgs:
-      - zabbix20-server
-      - zabbix20-server-mysql
+  - pkgs:
+    - zabbix20-server
+    - zabbix20-server-mysql
   file.managed:
-    - name: /etc/zabbix_server.conf
-    - source: salt://zabbix/files/etc/zabbix_server.conf
-    - template: jinja
-    - defaults:
-        DBHost: localhost
-        DBName: zabbix
-        DBUser: zabbix
-        DBPassword: zabbix_pass
-        DBSocket: /var/lib/mysql/mysql.sock
-        DBPort: 3306
+  - name: /etc/zabbix_server.conf
+  - source: salt://zabbix/files/etc/zabbix_server.conf
+  - template: jinja
+  - defaults:
+      DBHost: localhost
+      DBName: zabbix
+      DBUser: zabbix
+      DBPassword: zabbix_pass
+      DBSocket: /var/lib/mysql/mysql.sock
+      DBPort: 3306
     - require:
       - pkg: zabbix-server
   service.running:
@@ -76,19 +76,6 @@ zabbix_mysql-init:
     - require_in:
       - file: zabbix-server
       - service: zabbix-server
-
-    Status
-    API
-    Training
-    Shop
-    Blog
-    About
-
-    © 2014 GitHub, Inc.
-    Terms
-    Privacy
-    Security
-    Contact
 
 
 
