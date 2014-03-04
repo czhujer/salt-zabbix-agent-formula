@@ -28,21 +28,21 @@ zabbix_agent_packages:
 
 {% if version == '2' %}
 
-{% set zabbix_base_url = 'http://repo.zabbix.com/zabbix/2.0/ubuntu/pool/main/z/zabbix-release' %}
-{% set zabbix_base_file = 'zabbix-release_2.0-1precise_all.deb' %}
-
-zabbix_package_download:
-  cmd.run:
-  - name: wget {{ zabbix_base_url }}/{{ zabbix_base_file }}
-  - unless: "[ -f /root/{{ zabbix_base_file }} ]"
-  - cwd: /root
+zabbix_agent_repo:
+  pkgrepo.managed:
+  - human_name: Zabbix
+  - names:
+    - deb http://repo.zabbix.com/zabbix/2.0/ubuntu precise main
+    - deb-src http://repo.zabbix.com/zabbix/2.0/ubuntu precise main
+  - file: /etc/apt/sources.list.d/zabbix.list
+  - key_url: salt://zabbix/conf/zabbix-apt.gpg
 
 zabbix_agent_packages:
   pkg.installed:
   - sources:
-    - zabbix-release: /root/{{ zabbix_base_file }}
+    - zabbix-agent
   - require:
-    - cmd: zabbix_package_download
+    - pkgrepo: zabbix_agent_repo
 
 {% else %}
 
