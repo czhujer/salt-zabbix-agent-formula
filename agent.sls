@@ -120,7 +120,7 @@ zabbix_agent_package_unpack:
 zabbix_agent_service_install:
   cmd.run:
   - names:
-    - "{{ zabbix_homedir }}/bin/zabbix_agentd.exe" --install
+    - {{ zabbix_homedir }}/bin/zabbix_agentd.exe --install
   - unless: sc query "Zabbix Agent"
   - require:
     - file: zabbix_agent_config
