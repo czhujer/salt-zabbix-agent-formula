@@ -6,6 +6,8 @@
 
 {%- if grains.os_family == "RedHat" %}
 
+{% set zabbix_agent_config == '/etc/zabbix_agentd.conf' %}
+
 {% if version == '2' %}
 {% set zabbix_package_present = 'zabbix20-agent' %}
 {% set zabbix_packages_absent = ['zabbix-agent', 'zabbix'] %}
@@ -25,6 +27,9 @@ zabbix_agent_packages:
 {%- endif %}
 
 {%- if grains.os_family == "Debian" %}
+
+{% set zabbix_agent_config == '/etc/zabbix/zabbix_agentd.conf' %}
+
 
 {% if version == '2' %}
 
@@ -56,7 +61,7 @@ zabbix_agent_packages:
 
 zabbix_agent_config:
   file.managed:
-  - name: /etc/zabbix_agentd.conf
+  - name: {{ zabbix_agent_config }}
   - source: salt://zabbix/conf/zabbix_agentd.conf
   - template: jinja
   - require:
