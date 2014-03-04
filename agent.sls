@@ -39,7 +39,7 @@ zabbix_agent_repo:
 
 zabbix_agent_packages:
   pkg.installed:
-  - sources:
+  - names:
     - zabbix-agent
   - require:
     - pkgrepo: zabbix_agent_repo
