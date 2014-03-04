@@ -4,6 +4,8 @@
 
 {% set version = agent.get('version', '2') %}
 
+{%- if grains.kernel == "Linux" %}
+
 {%- if grains.os_family == "RedHat" %}
 
 {% set zabbix_agent_config = '/etc/zabbix_agentd.conf' %}
@@ -79,6 +81,52 @@ zabbix_agent_service:
   - enable: True
   - watch:
     - file: zabbix_agent_config
+
+{%- endif %}
+
+{%- if grains.kernel == "Windows" %}
+
+{% set zabbix_confdir = 'C:/' %}
+{% set zabbix_homedir = 'C:/Program Files/Zabbix' %}
+
+{% if version == '2' %}
+{% set zabbix_agent_version = '2.0.10' %}
+{% set zabbix_agent_source_hash = '3c18e6d659f15bf3970bea65d1e1dd22' %}
+{% else %}
+{% set zabbix_agent_version = '1.8.19' %}
+{% set zabbix_agent_source_hash = '3eafd5287866898a4ce3701091178e2e' %}
+{% endif %}
+
+zabbix_agent_config:
+  file.managed:
+  - name: {{ zabbix_confdir }}zabbix_agentd.conf
+  - source: salt://zabbix/conf/zabbix_agentd.win.conf
+  - template: jinja
+
+zabbix_agent_download:
+  file.managed:
+  - name: C:/zabbix_agents_{{ zabbix_agent_version }}.win.zip
+  - source: http://www.zabbix.com/downloads/{{ zabbix_agent_version }}/zabbix_agents_{{ zabbix_agent_version }}.win.zip
+  - source_hash: {{ zabbix_agent_source_hash }}+md5
+
+zabbix_agent_service_install:
+  cmd.run:
+  - names:
+    - 7zip C:/zabbix_agents_{{ zabbix_agent_version }}.win.zip {{ zabbix_homedir }}
+    - {{ zabbix_homedir }}/bin/zabbix_agentd.exe --install
+  - unless: sc query "Zabbix Agent"
+  - require:
+    - file: zabbix_agent_config
+
+zabbix_agent_service:
+  service.running:
+  - name: zabbix-agent
+  - enable: True
+  - watch:
+    - file: zabbix_agent_config
+    - cmd: zabbix_agent_service_install
+
+{%- endif %}
 
 {%- else %}
 
