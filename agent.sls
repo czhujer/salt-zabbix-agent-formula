@@ -69,28 +69,10 @@ zabbix_agentd.conf.d:
   - require:
     - pkg: zabbix_agent_packages
 
-zabbix_user:
-  user.present:
-  - name: zabbix
-  - system: True
-  - home: /var/lib/zabbix
-
-zabbix_dirs:
-  file.directory:
-  - names:
-    - /var/log/zabbix
-    - /var/run/zabbix
-  - user: zabbix
-  - makedirs: true
-  - require:
-    - user: zabbix_user
-
 zabbix_agent_service:
   service.running:
   - name: zabbix-agent
   - enable: True
-  - require:
-    - file: zabbix_dirs
   - watch:
     - file: zabbix_agent_config
 
