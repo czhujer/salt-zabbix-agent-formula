@@ -112,7 +112,7 @@ zabbix_agent_package_download:
 zabbix_agent_package_unpack:
   cmd.run:
   - names:
-    - "%programfiles%/7-Zip/7z.exe x C:/zabbix_agents_{{ zabbix_agent_version }}.win.zip {{ zabbix_homedir }}"
+    - "'%programfiles%/7-Zip/7z.exe' x C:/zabbix_agents_{{ zabbix_agent_version }}.win.zip '{{ zabbix_homedir }}'"
   - unless: sc query "Zabbix Agent"
   - require:
     - file: zabbix_agent_package_download
