@@ -103,28 +103,37 @@ zabbix_agent_config:
   - source: salt://zabbix/conf/zabbix_agentd.win.conf
   - template: jinja
 
-zabbix_agent_download:
+zabbix_agent_package_download:
   file.managed:
   - name: C:/zabbix_agents_{{ zabbix_agent_version }}.win.zip
   - source: http://www.zabbix.com/downloads/{{ zabbix_agent_version }}/zabbix_agents_{{ zabbix_agent_version }}.win.zip
   - source_hash: {{ zabbix_agent_source_hash }}
 
+zabbix_agent_package_unpack:
+  cmd.run:
+  - names:
+    - c:/program files/7-Zip/7z.exe x C:/zabbix_agents_{{ zabbix_agent_version }}.win.zip "{{ zabbix_homedir }}"
+  - unless: sc query "Zabbix Agent"
+  - require:
+    - file: zabbix_agent_package_download
+
 zabbix_agent_service_install:
   cmd.run:
   - names:
-    - 7zip C:/zabbix_agents_{{ zabbix_agent_version }}.win.zip {{ zabbix_homedir }}
-    - {{ zabbix_homedir }}/bin/zabbix_agentd.exe --install
+    - "{{ zabbix_homedir }}/bin/zabbix_agentd.exe" --install
   - unless: sc query "Zabbix Agent"
   - require:
     - file: zabbix_agent_config
+    - cmd: zabbix_agent_package_unpack
 
 zabbix_agent_service:
   service.running:
   - name: zabbix-agent
   - enable: True
+  - require:
+    - cmd: zabbix_agent_service_install
   - watch:
     - file: zabbix_agent_config
-    - cmd: zabbix_agent_service_install
 
 {%- endif %}
 
