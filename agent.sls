@@ -36,7 +36,6 @@ zabbix_agent_firewall_rule:
     - connstate: NEW
     - dport: 10050
     - proto: tcp
-    - source: 10.0.110.36/32
     - save: True
 
 {%- endif %}
