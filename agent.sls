@@ -26,6 +26,7 @@ zabbix_agent_packages:
   pkg.installed:
   - name: {{ zabbix_package_present }}
 
+{#
 zabbix_agent_firewall_rule:
   iptables.insert:
     - position: 4
@@ -38,6 +39,7 @@ zabbix_agent_firewall_rule:
     - proto: tcp
     - sport: 1025:65535
     - save: True
+#}
 
 {%- endif %}
 
