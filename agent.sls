@@ -26,6 +26,18 @@ zabbix_agent_packages:
   pkg.installed:
   - name: {{ zabbix_package_present }}
 
+zabbix_agent_firewall_rule:
+  iptables.insert:
+    - position: 4
+    - table: filter
+    - chain: INPUT
+    - jump: ACCEPT
+    - match: tcp
+    - dport: 10050
+    - proto: tcp
+    - source: 10.0.110.36/32
+    - save: True
+
 {%- endif %}
 
 {%- if grains.os_family == "Debian" %}
@@ -139,6 +151,8 @@ zabbix_agent_service:
 
 {%- else %}
 
+{%- if grains.kernel == "Linux" %}
+
 zabbix_agent_packages:
   pkg.removed:
   - names:
@@ -146,5 +160,13 @@ zabbix_agent_packages:
     - zabbix20
     - zabbix-agent
     - zabbix
+
+{%- endif %}
+
+{%- if grains.kernel == "Windows" %}
+
+{# TODO - erase files, archives, erase windows services from ... etc #}
+
+{%- endif %}
 
 {%- endif %}
