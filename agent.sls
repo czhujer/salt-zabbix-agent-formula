@@ -32,6 +32,8 @@ zabbix_agent_firewall_rule:
     - table: filter
     - chain: INPUT
     - jump: ACCEPT
+    - match: state
+    - connstate: NEW
     - dport: 10050
     - proto: tcp
     - source: 10.0.110.36/32
