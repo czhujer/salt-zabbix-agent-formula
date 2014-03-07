@@ -102,7 +102,7 @@ zabbix_agent_service:
 {%- if grains.kernel == "Windows" %}
 
 {% set zabbix_confdir = 'C:/' %}
-{% set zabbix_homedir = '%programfiles%/zabbix' %}
+{% set zabbix_homedir = 'C:/zabbix' %}
 
 {% if version == '2' %}
 {% set zabbix_agent_version = '2.0.10' %}
@@ -124,18 +124,23 @@ zabbix_agent_package_download:
   - source: http://www.zabbix.com/downloads/{{ zabbix_agent_version }}/zabbix_agents_{{ zabbix_agent_version }}.win.zip
   - source_hash: {{ zabbix_agent_source_hash }}
 
+zabbix_agent_homedir:
+  file.directory:
+  - name: {{ zabbix_homedir }}
+
 zabbix_agent_package_unpack:
   cmd.run:
   - names:
-    - "'%programfiles%/7-Zip/7z.exe' x C:/zabbix_agents_{{ zabbix_agent_version }}.win.zip '{{ zabbix_homedir }}'"
+    - C:\"Program files"\7-Zip\7z.exe x C:\zabbix_agents_{{ zabbix_agent_version }}.win.zip -oC:\zabbix
   - unless: sc query "Zabbix Agent"
   - require:
     - file: zabbix_agent_package_download
+    - file: zabbix_agent_homedir
 
 zabbix_agent_service_install:
   cmd.run:
   - names:
-    - "{{ zabbix_homedir }}/bin/zabbix_agentd.exe --install"
+    - C:\zabbix\bin\zabbix_agentd.exe --install"
   - unless: sc query "Zabbix Agent"
   - require:
     - file: zabbix_agent_config
