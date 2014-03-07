@@ -140,7 +140,7 @@ zabbix_agent_package_unpack:
 zabbix_agent_service_install:
   cmd.run:
   - names:
-    - C:\zabbix\bin\zabbix_agentd.exe --install"
+    - C:\zabbix\bin\win64\zabbix_agentd.exe --install"
   - unless: sc query "Zabbix Agent"
   - require:
     - file: zabbix_agent_config
