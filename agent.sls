@@ -148,7 +148,7 @@ zabbix_agent_service_install:
 
 zabbix_agent_service:
   service.running:
-  - name: zabbix-agent
+  - name: Zabbix Agent
   - enable: True
   - require:
     - cmd: zabbix_agent_service_install
