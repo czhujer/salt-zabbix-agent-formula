@@ -154,7 +154,6 @@ zabbix_agent_win_adv_items_f1:
   file.managed:
   - name: {{ zabbix_homedir }}\zabbix_boot_time.vbs
   - source: salt://zabbix/conf/zabbix_boot_time.vbs
-  - template: jinja
   - require:
     - file: zabbix_agent_homedir
 
@@ -162,7 +161,6 @@ zabbix_agent_win_adv_items_f2:
   file.managed:
   - name: {{ zabbix_homedir }}\zabbix_server_dns_config.vbs
   - source: salt://zabbix/conf/zabbix_server_dns_config.vbs
-  - template: jinja
   - require:
     - file: zabbix_agent_homedir
 
@@ -170,7 +168,6 @@ zabbix_agent_win_adv_items_f3:
   file.managed:
   - name: {{ zabbix_homedir }}\zabbix_server_role.vbs
   - source: salt://zabbix/conf/zabbix_server_role.vbs
-  - template: jinja
   - require:
     - file: zabbix_agent_win_adv_items_f2
 
@@ -178,7 +175,6 @@ zabbix_agent_win_adv_items_f4:
   file.managed:
   - name: {{ zabbix_homedir }}\zabbix_server_serialnumber.vbs
   - source: salt://zabbix/conf/zabbix_server_serialnumber.vbs
-  - template: jinja
   - require:
     - file: zabbix_agent_win_adv_items_f3
 
@@ -186,7 +182,6 @@ zabbix_agent_win_adv_items_f5:
   file.managed:
   - name: {{ zabbix_homedir }}\zabbix_user_domain.vbs
   - source: salt://zabbix/conf/zabbix_user_domain.vbs
-  - template: jinja
   - require:
     - file: zabbix_agent_win_adv_items_f4
 
@@ -194,7 +189,6 @@ zabbix_agent_win_adv_items_f6:
   file.managed:
   - name: {{ zabbix_homedir }}\zabbix_win_quota.vbs
   - source: salt://zabbix/conf/zabbix_win_quota.vbs
-  - template: jinja
   - require:
     - file: zabbix_agent_win_adv_items_f5
 
@@ -202,7 +196,6 @@ zabbix_agent_win_adv_items_f7:
   file.managed:
   - name: {{ zabbix_homedir }}\zabbix_win_system_discovery.vbs
   - source: salt://zabbix/conf/zabbix_win_system_discovery.vbs
-  - template: jinja
   - require:
     - file: zabbix_agent_win_adv_items_f6
 
@@ -210,7 +203,6 @@ zabbix_agent_win_adv_items_f8:
   file.managed:
   - name: {{ zabbix_homedir }}\zabbix_wus_update_all.vbs
   - source: salt://zabbix/conf/zabbix_wus_update_all.vbs
-  - template: jinja
   - require:
     - file: zabbix_agent_win_adv_items_f7
 
@@ -218,7 +210,6 @@ zabbix_agent_win_adv_items_f9:
   file.managed:
   - name: {{ zabbix_homedir }}\zabbix_wus_update_crit.vbs
   - source: salt://zabbix/conf/zabbix_wus_update_crit.vbs
-  - template: jinja
   - require:
     - file: zabbix_agent_win_adv_items_f8
 
