@@ -102,7 +102,7 @@ zabbix_agent_service:
 {%- if grains.kernel == "Windows" %}
 
 {% set zabbix_homedir = 'C:/Program files/zabbix-agent' %}
-{% set zabbix_homedir_2 = 'C:/"Program files"/zabbix-agent' %}
+{% set zabbix_homedir2 = 'C:/"Program files"/zabbix-agent' %}
 
 {% set zabbix_confdir = 'C:/Program files/zabbix-agent/conf' %}
 
