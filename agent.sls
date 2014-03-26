@@ -105,6 +105,7 @@ zabbix_agent_service:
 {% set zabbix_homedir2 = 'C:/"Program files"/zabbix-agent' %}
 
 {% set zabbix_confdir = 'C:/Program files/zabbix-agent/conf' %}
+{% set zabbix_confdir2 = 'C:/"Program files"/zabbix-agent/conf' %}
 
 {% if version == '2' %}
 {% set zabbix_agent_version = '2.0.10' %}
@@ -130,22 +131,22 @@ zabbix_agent_confdir:
   - require:
     - file: zabbix_agent_homedir
 
-zabbix_agent_config:
-  file.managed:
-  - name: {{ zabbix_confdir }}/zabbix_agentd.conf
-  - source: salt://zabbix/conf/zabbix_agentd.win.conf
-  - template: jinja
-  - require:
-    - file: zabbix_agent_confdir
-
 zabbix_agent_package_unpack:
   cmd.run:
   - names:
     - C:\"Program files"\7-Zip\7z.exe x C:\zabbix_agents_{{ zabbix_agent_version }}.win.zip -o{{ zabbix_homedir2 }}
   - unless: sc query "Zabbix Agent"
   - require:
-    - file: zabbix_agent_package_download
+    - file: zabbix_agent_confdir
     - file: zabbix_agent_homedir
+
+zabbix_agent_config:
+  file.managed:
+  - name: {{ zabbix_confdir }}/zabbix_agentd.win.conf
+  - source: salt://zabbix/conf/zabbix_agentd.win.conf
+  - template: jinja
+  - require:
+    - file: zabbix_agent_package_download
 
 {% if pillar.zabbix.agent.get("win_adv_items", "false") == true %}
 
@@ -226,7 +227,7 @@ zabbix_agent_win_adv_items_f9:
 zabbix_agent_service_install:
   cmd.run:
   - names:
-    - {{ zabbix_homedir }}\bin\win64\zabbix_agentd.exe --install --config {{ zabbix_confdir }}\zabbix_agentd.conf"
+    - {{ zabbix_homedir2 }}\bin\win64\zabbix_agentd.exe --install --config {{ zabbix_confdir }}\zabbix_agentd.conf"
   - unless: sc query "Zabbix Agent"
   - require:
     - file: zabbix_agent_config
