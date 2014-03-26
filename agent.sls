@@ -227,7 +227,7 @@ zabbix_agent_win_adv_items_f9:
 zabbix_agent_service_install:
   cmd.run:
   - names:
-    - {{ zabbix_homedir2 }}\bin\win64\zabbix_agentd.exe --install --config {{ zabbix_confdir }}\zabbix_agentd.conf"
+    - {{ zabbix_homedir2 }}\bin\win64\zabbix_agentd.exe --install --config \"{{ zabbix_confdir }}\zabbix_agentd.win.conf\""
   - unless: sc query "Zabbix Agent"
   - require:
     - file: zabbix_agent_config
