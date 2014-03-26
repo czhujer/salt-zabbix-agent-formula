@@ -14,6 +14,28 @@ Zabbix is an enterprise-class open source distributed monitoring solution for ne
           host: 10.0.0.20
           port: ...
 
+### Sample pillar of Zabbix agent with advanced windows items
+
+    zabbix:
+      agent:
+        enabled: true
+        server:
+          host: 10.0.0.20
+          port: ...
+        win_adv_items: true
+
+### Sample pillar with custom logging
+
+    zabbix:
+      agent:
+        enabled: true
+        database:
+          engine: mysql
+          host: localhost
+          user: ...
+          password: ...
+        logging: syslog
+
 ### Sample pillar of Zabbix server
 
     zabbix:
@@ -25,17 +47,6 @@ Zabbix is an enterprise-class open source distributed monitoring solution for ne
           user: ...
           password: ...
 
-### Sample pillar with custom logging
-
-    zabbix:
-      server:
-        enabled: true
-        database:
-          engine: mysql
-          host: localhost
-          user: ...
-          password: ...
-        logging: syslog
 
 ## Read more
 

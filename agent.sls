@@ -101,8 +101,8 @@ zabbix_agent_service:
 
 {%- if grains.kernel == "Windows" %}
 
-{% set zabbix_confdir = 'C:/' %}
-{% set zabbix_homedir = 'C:/zabbix' %}
+{% set zabbix_homedir = 'C:/"Program files"/zabbix-agent' %}
+{% set zabbix_confdir = 'C:/"Program files"/zabbix-agent/conf' %}
 
 {% if version == '2' %}
 {% set zabbix_agent_version = '2.0.10' %}
@@ -111,12 +111,6 @@ zabbix_agent_service:
 {% set zabbix_agent_version = '1.8.19' %}
 {% set zabbix_agent_source_hash = 'md5=3eafd5287866898a4ce3701091178e2e' %}
 {% endif %}
-
-zabbix_agent_config:
-  file.managed:
-  - name: {{ zabbix_confdir }}zabbix_agentd.conf
-  - source: salt://zabbix/conf/zabbix_agentd.win.conf
-  - template: jinja
 
 zabbix_agent_package_download:
   file.managed:
@@ -128,6 +122,20 @@ zabbix_agent_homedir:
   file.directory:
   - name: {{ zabbix_homedir }}
 
+zabbix_agent_confdir:
+  file.directory:
+  - name: {{ zabbix_confdir }}
+  - require:
+    - file: zabbix_agent_homedir
+
+zabbix_agent_config:
+  file.managed:
+  - name: {{ zabbix_confdir }}/zabbix_agentd.conf
+  - source: salt://zabbix/conf/zabbix_agentd.win.conf
+  - template: jinja
+  - require:
+    - file: zabbix_agent_confdir
+
 zabbix_agent_package_unpack:
   cmd.run:
   - names:
@@ -137,14 +145,93 @@ zabbix_agent_package_unpack:
     - file: zabbix_agent_package_download
     - file: zabbix_agent_homedir
 
+{% if pillar.zabbix.agent.get("win_adv_items", "false") == true %}
+
+zabbix_agent_win_adv_items_f1:
+  file.managed:
+  - name: {{ zabbix_homedir }}\zabbix_boot_time.vbs
+  - source: salt://zabbix/conf/zabbix_boot_time.vbs
+  - template: jinja
+  - require:
+    - file: zabbix_agent_homedir
+
+zabbix_agent_win_adv_items_f2:
+  file.managed:
+  - name: {{ zabbix_homedir }}\zabbix_server_dns_config.vbs
+  - source: salt://zabbix/conf/zabbix_server_dns_config.vbs
+  - template: jinja
+  - require:
+    - file: zabbix_agent_homedir
+
+zabbix_agent_win_adv_items_f3:
+  file.managed:
+  - name: {{ zabbix_homedir }}\zabbix_server_role.vbs
+  - source: salt://zabbix/conf/zabbix_server_role.vbs
+  - template: jinja
+  - require:
+    - file: zabbix_agent_win_adv_items_f2
+
+zabbix_agent_win_adv_items_f4:
+  file.managed:
+  - name: {{ zabbix_homedir }}\zabbix_server_serialnumber.vbs
+  - source: salt://zabbix/conf/zabbix_server_serialnumber.vbs
+  - template: jinja
+  - require:
+    - file: zabbix_agent_win_adv_items_f3
+
+zabbix_agent_win_adv_items_f5:
+  file.managed:
+  - name: {{ zabbix_homedir }}\zabbix_user_domain.vbs
+  - source: salt://zabbix/conf/zabbix_user_domain.vbs
+  - template: jinja
+  - require:
+    - file: zabbix_agent_win_adv_items_f4
+
+zabbix_agent_win_adv_items_f6:
+  file.managed:
+  - name: {{ zabbix_homedir }}\zabbix_win_quota.vbs
+  - source: salt://zabbix/conf/zabbix_win_quota.vbs
+  - template: jinja
+  - require:
+    - file: zabbix_agent_win_adv_items_f5
+
+zabbix_agent_win_adv_items_f7:
+  file.managed:
+  - name: {{ zabbix_homedir }}\zabbix_win_system_discovery.vbs
+  - source: salt://zabbix/conf/zabbix_win_system_discovery.vbs
+  - template: jinja
+  - require:
+    - file: zabbix_agent_win_adv_items_f6
+
+zabbix_agent_win_adv_items_f8:
+  file.managed:
+  - name: {{ zabbix_homedir }}\zabbix_wus_update_all.vbs
+  - source: salt://zabbix/conf/zabbix_wus_update_all.vbs
+  - template: jinja
+  - require:
+    - file: zabbix_agent_win_adv_items_f7
+
+zabbix_agent_win_adv_items_f9:
+  file.managed:
+  - name: {{ zabbix_homedir }}\zabbix_wus_update_crit.vbs
+  - source: salt://zabbix/conf/zabbix_wus_update_crit.vbs
+  - template: jinja
+  - require:
+    - file: zabbix_agent_win_adv_items_f8
+
+{% endif %}
+
 zabbix_agent_service_install:
   cmd.run:
   - names:
-    - C:\zabbix\bin\win64\zabbix_agentd.exe --install"
+    - {{ zabbix_homedir }}\bin\win64\zabbix_agentd.exe --install --config {{ zabbix_confdir }}\zabbix_agentd.conf"
   - unless: sc query "Zabbix Agent"
   - require:
     - file: zabbix_agent_config
     - cmd: zabbix_agent_package_unpack
+{% if pillar.zabbix.agent.get("win_adv_items", "false") == true %}
+    - file: zabbix_agent_win_adv_items_f9
+{% endif %}
 
 zabbix_agent_service:
   service.running:
@@ -154,6 +241,9 @@ zabbix_agent_service:
     - cmd: zabbix_agent_service_install
   - watch:
     - file: zabbix_agent_config
+{% if pillar.zabbix.agent.get("win_adv_items", "false") == true %}
+    - file: zabbix_agent_win_adv_items_f9
+{% endif %}
 
 {%- endif %}
 
