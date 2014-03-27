@@ -228,6 +228,14 @@ zabbix_agent_service_install:
     - file: zabbix_agent_win_adv_items_f9
 {% endif %}
 
+zabbix_agent_win_firewall:
+  cmd.run:
+  - names:
+    - netsh advfirewall firewall add rule name="zabbix-agent" protocol=TCP localport=10050 action=allow dir=IN remoteip=10.0.110.36
+  - unless: netsh advfirewall firewall show rule name="zabbix-agent"
+  - require:
+    - cmd: zabbix_agent_service_install
+
 zabbix_agent_service:
   service.running:
   - name: Zabbix Agent
