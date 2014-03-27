@@ -134,7 +134,7 @@ zabbix_agent_confdir:
 zabbix_agent_package_unpack:
   cmd.run:
   - names:
-    - C:\"Program files"\7-Zip\7z.exe x C:\zabbix_agents_{{ zabbix_agent_version }}.win.zip -o{{ zabbix_homedir2 }}
+    - C:\"Program files"\7-Zip\7z.exe -y x C:\zabbix_agents_{{ zabbix_agent_version }}.win.zip -o{{ zabbix_homedir2 }}
   - unless: sc query "Zabbix Agent"
   - timeout: 10
   - require:
