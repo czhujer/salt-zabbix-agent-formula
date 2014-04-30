@@ -98,7 +98,7 @@ zabbix_agent_config_openstack:
   - source: salt://zabbix/conf/zabbix-openstack.conf
   - template: jinja
   - require:
-    - pkg: zabbix_agentd.conf.d
+    - file: zabbix_agentd.conf.d
 
 {%- endif %}
 
