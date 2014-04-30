@@ -90,6 +90,18 @@ zabbix_agentd.conf.d:
   - require:
     - pkg: zabbix_agent_packages
 
+{%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined)) %}
+
+zabbix_agent_config_openstack:
+  file.managed:
+  - name: /etc/zabbix/zabbix_agentd.conf.d/zabbix-openstack.conf
+  - source: salt://zabbix/conf/zabbix-openstack.conf
+  - template: jinja
+  - require:
+    - pkg: zabbix_agentd.conf.d
+
+{%- endif %}
+
 zabbix_agent_service:
   service.running:
   - name: zabbix-agent
