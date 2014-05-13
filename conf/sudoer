@@ -1,0 +1,6 @@
+#
+# for zabbix monitoring
+#
+Defaults:zabbix !requiretty
+#
+zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/openstack_control.sh *
