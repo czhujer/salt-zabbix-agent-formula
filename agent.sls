@@ -100,6 +100,17 @@ zabbix_agent_config_openstack:
   - require:
     - file: zabbix_agentd.conf.d
 
+/etc/sudoers.d/zabbix-agent:
+file:
+- managed
+- source: salt://zabbix/conf/sudoer
+- template: jinja
+- user: root
+- group: root
+- mode: 440
+- defaults:
+user_name: zabbix
+
 {%- endif %}
 
 zabbix_agent_service:
@@ -108,7 +119,7 @@ zabbix_agent_service:
   - enable: True
   - watch:
     - file: zabbix_agent_config
-
+    - file: /etc/sudoers.d/zabbix-agent
 {%- endif %}
 
 {%- if grains.kernel == "Windows" %}
