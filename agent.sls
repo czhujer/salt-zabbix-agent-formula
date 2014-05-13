@@ -101,7 +101,7 @@ zabbix_agent_config_openstack:
     - file: zabbix_agentd.conf.d
 
 zabbix_agent_sudoers_file:
-file.managed:
+  file.managed:
   - name: /etc/sudoers.d/zabbix-agent
   - source: salt://zabbix/conf/sudoer
   - template: jinja
