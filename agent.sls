@@ -100,6 +100,14 @@ zabbix_agent_config_openstack:
   - require:
     - file: zabbix_agentd.conf.d
 
+zabbix_agent_config_openstack_ha:
+  file.managed:
+  - name: /etc/zabbix/zabbix_agentd.conf.d/zabbix-ops-high-avail.conf
+  - source: salt://zabbix/conf/zabbix-ops-high-avail.conf
+  - template: jinja
+  - require:
+    - file: zabbix_agentd.conf.d
+
 zabbix_agent_sudoers_file:
   file.managed:
   - name: /etc/sudoers.d/zabbix-agent
@@ -119,6 +127,8 @@ zabbix_agent_service:
   - enable: True
   - watch:
     - file: zabbix_agent_config
+    - file: zabbix_agent_config_openstack
+    - file: zabbix_agent_config_openstack_ha
     - file: zabbix_agent_sudoers_file
 {%- endif %}
 
