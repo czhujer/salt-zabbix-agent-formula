@@ -127,7 +127,8 @@ zabbix_agent_service:
   - enable: True
   - watch:
     - file: zabbix_agent_config
-    - file: zabbix_agent_openstack_ha
+    - file: zabbix_agent_config_openstack
+    - file: zabbix_agent_config_openstack_ha
     - file: zabbix_agent_sudoers_file
 {%- endif %}
 
