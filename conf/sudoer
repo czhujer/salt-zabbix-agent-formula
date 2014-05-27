@@ -4,7 +4,11 @@
 Defaults:zabbix !requiretty
 #
 zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/openstack_control.sh *
+zabbix  ALL=(ALL)       NOPASSWD: /usr/bin/nova-manage service list
+{%- if (pillar.get('mysql', {}).cluster is defined) %}
 zabbix  ALL=(ALL)       NOPASSWD: /srv/sensu/checks/check_galera_cluster *
+{%- endif %}
+{%- if (pillar.get('pacemaker', {}).cluster is defined) %}
 zabbix  ALL=(ALL)       NOPASSWD: /srv/sensu/checks/check_pacemaker_actions
 zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/crm_mon_stats.sh *
-zabbix  ALL=(ALL)       NOPASSWD: /usr/bin/nova-manage service list
+{%- endif %}
