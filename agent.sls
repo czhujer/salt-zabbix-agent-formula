@@ -90,7 +90,7 @@ zabbix_agentd.conf.d:
   - require:
     - pkg: zabbix_agent_packages
 
-{%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined)) %}
+{%- if ((pillar.get('nova', {}) is defined) or (pillar.get('neutron', {}).server is defined)) %}
 
 zabbix_agent_config_openstack:
   file.managed:
@@ -100,6 +100,10 @@ zabbix_agent_config_openstack:
   - require:
     - file: zabbix_agentd.conf.d
 
+{%- endif %}
+
+{%- if ((pillar.get('mysql', {}).cluster is defined) or (pillar.get('pacemaker', {}).cluster is defined)) %}
+
 zabbix_agent_config_openstack_ha:
   file.managed:
   - name: /etc/zabbix/zabbix_agentd.conf.d/zabbix-ops-high-avail.conf
@@ -107,6 +111,10 @@ zabbix_agent_config_openstack_ha:
   - template: jinja
   - require:
     - file: zabbix_agentd.conf.d
+
+{%- endif %}
+
+{%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined)) %}
 
 zabbix_agent_sudoers_file:
   file.managed:
@@ -121,15 +129,42 @@ zabbix_agent_sudoers_file:
 
 {%- endif %}
 
+{%- if (pillar.get('pacemaker', {}).cluster is defined) %}
+
+zabbix_agent_root_scripts:
+  file.directory:
+  - name: /root/scripts
+  - makedirs: true
+
+zabbix_agent_crm_mon_stats:
+  file.managed:
+  - name: /root/scripts/crm_mon_stats.sh
+  - source: salt://zabbix/scripts/crm_mon_stats.sh
+  - template: jinja
+  - user: root
+  - group: root
+  - mode: 755
+  - require:
+    - file: zabbix_agent_root_scripts
+
+{%- endif %}
+
 zabbix_agent_service:
   service.running:
   - name: zabbix-agent
   - enable: True
   - watch:
     - file: zabbix_agent_config
+{%- if ((pillar.get('nova', {}) is defined) or (pillar.get('neutron', {}).server is defined)) %}
     - file: zabbix_agent_config_openstack
+{%- endif %}
+{%- if ((pillar.get('mysql', {}).cluster is defined) or (pillar.get('pacemaker', {}).cluster is defined)) %}
     - file: zabbix_agent_config_openstack_ha
+{%- endif %}
+{%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined)) %}
     - file: zabbix_agent_sudoers_file
+{%- endif %}
+
 {%- endif %}
 
 {%- if grains.kernel == "Windows" %}
