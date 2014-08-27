@@ -123,6 +123,7 @@ zabbix_agent_check_galera_cluster:
   file.managed:
   - name: /srv/sensu/checks/check_galera_cluster
   - source: salt://zabbix/scripts/check_galera_cluster
+  - mode: 755
   - require:
     - file: zabbix_agent_folder_checks
 
@@ -130,6 +131,7 @@ zabbix_agent_check_pacemaker:
   file.managed:
   - name: /srv/sensu/checks/check_pacemaker_actions
   - source: salt://zabbix/scripts/check_pacemaker_actions
+  - mode: 755
   - require:
     - file: zabbix_agent_folder_checks
 
