@@ -112,7 +112,7 @@ zabbix_agent_config_openstack_ha:
   - require:
     - file: zabbix_agentd.conf.d
 
-{%- if (pillar.get('sensu', {}].client is not defined) %}
+{%- if (pillar.get('sensu', {}).client is not defined) %}
 
 zabbix_agent_folder_checks:
   file.directory:
