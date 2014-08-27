@@ -112,6 +112,29 @@ zabbix_agent_config_openstack_ha:
   - require:
     - file: zabbix_agentd.conf.d
 
+{%- if (pillar.get('sensu', {}).client is not defined) %}
+
+zabbix_agent_folder_checks:
+  file.directory:
+  - name: /srv/sensu/checks
+  - makedirs: true
+
+zabbix_agent_check_galera_cluster:
+  file.managed:
+  - name: /srv/sensu/checks/check_galera_cluster
+  - source: salt://zabbix/scripts/check_galera_cluster
+  - require:
+    - file: zabbix_agent_folder_checks
+
+zabbix_agent_check_pacemaker:
+  file.managed:
+  - name: /srv/sensu/checks/check_pacemaker_actions
+  - source: salt://zabbix/scripts/check_pacemaker_actions
+  - require:
+    - file: zabbix_agent_folder_checks
+
+{%- endif %}
+
 {%- endif %}
 
 {%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined)) %}
