@@ -64,6 +64,13 @@ zabbix_agent_cassandra_m2:
       - file: zabbix_agent_cassandra_m1
       - pkg: zabbix_agent_packages2
 
+zabbix_agent_cassandra_d1:
+  file.directory:
+    - name: /usr/share/perl5/HariSekhon/Cassandra
+    - makedirs: true
+    - require:
+      - file: zabbix_agent_root_scripts
+
 zabbix_agent_cassandra_m3:
   file.managed:
   - name: /usr/share/perl5/HariSekhon/Cassandra/Nodetool.pm
@@ -72,4 +79,4 @@ zabbix_agent_cassandra_m3:
   - group: root
   - mode: 644
   - require:
-    - file: zabbix_agent_root_scripts
+    - file: zabbix_agent_cassandra_d1
