@@ -139,7 +139,7 @@ zabbix_agent_check_pacemaker:
 
 {%- endif %}
 
-{%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined)) %}
+{%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined) or (pillar.opencontrail.database.get('enabled', "false") == true)) %}
 
 zabbix_agent_sudoers_file:
   file.managed:
@@ -154,18 +154,36 @@ zabbix_agent_sudoers_file:
 
 {%- endif %}
 
-{%- if (pillar.get('pacemaker', {}).cluster is defined) %}
+{%- if ((pillar.get('pacemaker', {}).cluster is defined) or (pillar.opencontrail.database.get('enabled', "false") == true)) %}
 
 zabbix_agent_root_scripts:
   file.directory:
   - name: /root/scripts
   - makedirs: true
 
+{%- endif %}
+
+{%- if (pillar.get('pacemaker', {}).cluster is defined) %}
+
 zabbix_agent_crm_mon_stats:
   file.managed:
   - name: /root/scripts/crm_mon_stats.sh
   - source: salt://zabbix/scripts/crm_mon_stats.sh
   - template: jinja
+  - user: root
+  - group: root
+  - mode: 755
+  - require:
+    - file: zabbix_agent_root_scripts
+
+{%- endif %}
+
+{%- if (pillar.opencontrail.database.get('enabled', "false") == true) %}
+
+zabbix_agent_cassandra_script1:
+  file.managed:
+  - name: /root/scripts/x
+  - source: salt://zabbix/scripts/x
   - user: root
   - group: root
   - mode: 755
@@ -188,6 +206,9 @@ zabbix_agent_service:
 {%- endif %}
 {%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined)) %}
     - file: zabbix_agent_sudoers_file
+{%- endif %}
+{%- if (pillar.opencontrail.database.get('enabled', "false") == true) %}
+    - file: zabbix_agent_cassandra_script1
 {%- endif %}
 
 {%- endif %}
