@@ -61,6 +61,6 @@ zabbix_agent_cassandra_m2:
     - name: cpan install JSON
     - unless: "ls -lh /usr/local/share/perl5/JSON.pm"
     - require:
-      - file: zabbix_agent_cassandra_m1:
+      - file: zabbix_agent_cassandra_m1
       - pkg: zabbix_agent_cpan
 
