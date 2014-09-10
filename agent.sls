@@ -139,7 +139,7 @@ zabbix_agent_check_pacemaker:
 
 {%- endif %}
 
-{%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined)) %}
+{%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined) or (pillar.opencontrail.database.get('enabled', "false") == true)) %}
 
 zabbix_agent_sudoers_file:
   file.managed:
@@ -154,12 +154,16 @@ zabbix_agent_sudoers_file:
 
 {%- endif %}
 
-{%- if (pillar.get('pacemaker', {}).cluster is defined) %}
+{%- if ((pillar.get('pacemaker', {}).cluster is defined) or (pillar.opencontrail.database.get('enabled', "false") == true)) %}
 
 zabbix_agent_root_scripts:
   file.directory:
   - name: /root/scripts
   - makedirs: true
+
+{%- endif %}
+
+{%- if (pillar.get('pacemaker', {}).cluster is defined) %}
 
 zabbix_agent_crm_mon_stats:
   file.managed:
@@ -172,6 +176,15 @@ zabbix_agent_crm_mon_stats:
   - require:
     - file: zabbix_agent_root_scripts
 
+{%- endif %}
+
+{#
+# CassandraDB include
+#}
+
+{%- if (pillar.opencontrail.database.get('enabled', "false") == true) %}
+include:
+- zabbix.agent-cassandraDB
 {%- endif %}
 
 zabbix_agent_service:
@@ -188,6 +201,16 @@ zabbix_agent_service:
 {%- endif %}
 {%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined)) %}
     - file: zabbix_agent_sudoers_file
+{%- endif %}
+{%- if (pillar.opencontrail.database.get('enabled', "false") == true) %}
+    - file: zabbix_agent_cassandra_config
+    - file: zabbix_agent_cassandra_script1
+    - file: zabbix_agent_cassandra_script2
+    - file: zabbix_agent_cassandra_script3
+    - file: zabbix_agent_cassandra_m1
+    - cmd: zabbix_agent_cassandra_m2
+    - file: zabbix_agent_cassandra_m3
+    - file: zabbix_agent_cassandra_m4
 {%- endif %}
 
 {%- endif %}
