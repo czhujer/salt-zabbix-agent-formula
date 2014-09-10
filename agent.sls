@@ -180,6 +180,16 @@ zabbix_agent_crm_mon_stats:
 
 {%- if (pillar.opencontrail.database.get('enabled', "false") == true) %}
 
+zabbix_agent_cassandra_config:
+  file.managed:
+  - name: /etc/zabbix/zabbix_agentd.conf.d/zabbix-cassandraDB.conf
+  - source: salt://zabbix/conf/zabbix-cassandraDB.conf
+  - user: root
+  - group: root
+  - mode: 644
+  - require:
+    - file: zabbix_agentd.conf.d
+
 zabbix_agent_cassandra_script1:
   file.managed:
   - name: /root/scripts/cassandra.pl
