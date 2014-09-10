@@ -208,6 +208,8 @@ zabbix_agent_service:
     - file: zabbix_agent_cassandra_script2
     - file: zabbix_agent_cassandra_script3
     - file: zabbix_agent_cassandra_m1
+    - file: zabbix_agent_cassandra_m2
+    - file: zabbix_agent_cassandra_m3
 {%- endif %}
 
 {%- endif %}
