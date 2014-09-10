@@ -184,7 +184,7 @@ zabbix_agent_crm_mon_stats:
 
 {%- if (pillar.opencontrail.database.get('enabled', "false") == true) %}
 include:
-- zabbix.agent-cassandraDB
+- zabbix.agent-cassandra
 {%- endif %}
 
 zabbix_agent_service:
