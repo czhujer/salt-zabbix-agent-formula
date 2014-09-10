@@ -182,8 +182,8 @@ zabbix_agent_crm_mon_stats:
 
 zabbix_agent_cassandra_script1:
   file.managed:
-  - name: /root/scripts/x
-  - source: salt://zabbix/scripts/x
+  - name: /root/scripts/cassandra.pl
+  - source: salt://zabbix/scripts/cassandra.pl
   - user: root
   - group: root
   - mode: 755
