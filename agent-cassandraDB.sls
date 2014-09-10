@@ -80,3 +80,13 @@ zabbix_agent_cassandra_m3:
   - mode: 644
   - require:
     - file: zabbix_agent_cassandra_d1
+
+zabbix_agent_cassandra_m4:
+  file.managed:
+  - name: /usr/share/perl5/HariSekhon/Cassandra.pm
+  - source: salt://zabbix/scripts/Cassandra.pm
+  - user: root
+  - group: root
+  - mode: 644
+  - require:
+     - file: zabbix_agent_root_scripts
