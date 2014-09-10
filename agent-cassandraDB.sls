@@ -52,7 +52,7 @@ zabbix_agent_cassandra_m1:
 zabbix_agent_packages2:
   pkg.installed:
   - names:
-    - cpan
+    - perl-CPAN
   - require:
     - file: zabbix_agent_cassandra_m1
 
