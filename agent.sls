@@ -238,7 +238,10 @@ zabbix_agent_service:
     - file: zabbix_agent_sudoers_file
 {%- endif %}
 {%- if (pillar.opencontrail.database.get('enabled', "false") == true) %}
+    - file: zabbix_agent_cassandra_config
     - file: zabbix_agent_cassandra_script1
+    - file: zabbix_agent_cassandra_script2
+    - file: zabbix_agent_cassandra_script3
 {%- endif %}
 
 {%- endif %}
