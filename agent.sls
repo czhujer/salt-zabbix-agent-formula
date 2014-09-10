@@ -220,6 +220,16 @@ zabbix_agent_cassandra_script3:
   - require:
     - file: zabbix_agent_root_scripts
 
+zabbix_agent_cassandra_m1:
+  file.managed:
+  - name: /usr/local/share/perl5/HariSekhonUtils.pm
+  - source: salt://zabbix/scripts/HariSekhonUtils.pm
+  - user: root
+  - group: root
+  - mode: 644
+  - require:
+    - file: zabbix_agent_root_scripts
+
 {%- endif %}
 
 zabbix_agent_service:
