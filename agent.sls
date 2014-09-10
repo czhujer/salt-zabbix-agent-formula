@@ -178,9 +178,9 @@ zabbix_agent_crm_mon_stats:
 
 {%- endif %}
 
-#
+{#
 # CassandraDB include
-#
+#}
 
 {%- if (pillar.opencontrail.database.get('enabled', "false") == true) %}
 include:
