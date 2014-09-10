@@ -66,7 +66,7 @@ zabbix_agent_cassandra_m2:
 
 zabbix_agent_cassandra_m3:
   file.managed:
-  - name: /usr/share/perl5/Nodetool.pm
+  - name: /usr/share/perl5/HariSekhon/Cassandra/Nodetool.pm
   - source: salt://zabbix/scripts/Nodetool.pm
   - user: root
   - group: root
