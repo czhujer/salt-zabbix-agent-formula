@@ -200,6 +200,26 @@ zabbix_agent_cassandra_script1:
   - require:
     - file: zabbix_agent_root_scripts
 
+zabbix_agent_cassandra_script2:
+  file.managed:
+  - name: /root/scripts/check_cassandra_nodes.pl
+  - source: salt://zabbix/scripts/check_cassandra_nodes.pl
+  - user: root
+  - group: root
+  - mode: 755
+  - require:
+    - file: zabbix_agent_root_scripts
+
+zabbix_agent_cassandra_script3:
+  file.managed:
+  - name: /root/scripts/check_cassandra_tpstats.pl
+  - source: salt://zabbix/scripts/check_cassandra_tpstats.pl
+  - user: root
+  - group: root
+  - mode: 755
+  - require:
+    - file: zabbix_agent_root_scripts
+
 {%- endif %}
 
 zabbix_agent_service:

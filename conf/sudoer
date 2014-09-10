@@ -16,7 +16,7 @@ zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/crm_mon_stats.sh *
 
 zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/cassandra.pl
 
-zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/nagios-plugins/check_cassandra_nodes.pl *
-zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/nagios-plugins/check_cassandra_tpstats.pl *
+zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/check_cassandra_nodes.pl *
+zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/check_cassandra_tpstats.pl *
 
 {%- endif %}
