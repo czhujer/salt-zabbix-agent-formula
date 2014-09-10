@@ -62,5 +62,5 @@ zabbix_agent_cassandra_m2:
     - unless: "ls -lh /usr/local/share/perl5/JSON.pm"
     - require:
       - file: zabbix_agent_cassandra_m1
-      - pkg: zabbix_agent_cpan
+      - pkg: zabbix_agent_packages2
 
