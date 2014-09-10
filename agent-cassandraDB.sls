@@ -52,17 +52,9 @@ zabbix_agent_cassandra_m1:
 zabbix_agent_packages2:
   pkg.installed:
   - names:
-    - perl-CPAN
+    - perl-JSON
   - require:
     - file: zabbix_agent_cassandra_m1
-
-zabbix_agent_cassandra_m2:
-  cmd.run:
-    - name: timeout 120 cpan JSON
-    - unless: "ls -lh /usr/local/share/perl5/JSON.pm"
-    - require:
-      - file: zabbix_agent_cassandra_m1
-      - pkg: zabbix_agent_packages2
 
 zabbix_agent_cassandra_d1:
   file.directory:
