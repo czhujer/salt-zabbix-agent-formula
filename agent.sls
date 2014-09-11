@@ -179,12 +179,21 @@ zabbix_agent_crm_mon_stats:
 {%- endif %}
 
 {#
-# CassandraDB include
+# Contrail CassandraDB include
 #}
 
-{%- if (pillar.opencontrail.database.get('enabled', "false") == true) %}
+{%- if (pillar.get('opencontrail', {}).database.enabled == true) %}
 include:
 - zabbix.agent-cassandraDB
+{%- endif %}
+
+{#
+# Contrail redis include
+#}
+
+{%- if (pillar.get('opencontrail', {}).web.cache.engine == redis) %}
+include:
+- zabbix.agent-redis
 {%- endif %}
 
 zabbix_agent_service:
