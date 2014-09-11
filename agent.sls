@@ -194,8 +194,10 @@ include:
 #}
 
 {%- if (pillar.get('opencontrail', {}).web is defined) %}
+{%- if (pillar.opencontrail.web.get('engine', "false") == redis) %}
 include:
 - zabbix.agent-redis
+{%- endif %}
 {%- endif %}
 
 zabbix_agent_service:
@@ -222,6 +224,12 @@ zabbix_agent_service:
     - file: zabbix_agent_cassandra_m1
     - file: zabbix_agent_cassandra_m3
     - file: zabbix_agent_cassandra_m4
+{%- endif %}
+{%- endif %}
+{%- if (pillar.get('opencontrail', {}).web is defined) %}
+{%- if (pillar.opencontrail.web.get('engine', "false") == redis) %}
+    - file: zabbix_agent_redis_config
+    - file: zabbix_agent_redis_script
 {%- endif %}
 {%- endif %}
 

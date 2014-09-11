@@ -22,3 +22,8 @@ zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/check_cassandra_tpstats.pl *
 
 {%- endif %}
 {%- endif %}
+{%- if (pillar.get('opencontrail', {}).web is defined) %}
+{%- if (pillar.opencontrail.web.get('engine', "false") == redis) %}
+zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/zbx_redis_stats.py *
+{%- endif %}
+{%- endif %}
