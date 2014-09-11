@@ -194,7 +194,7 @@ include:
 #}
 
 {%- if (pillar.get('opencontrail', {}).web is defined) %}
-{%- if (pillar.opencontrail.web.get('engine', "false") == 'redis') %}
+{%- if (pillar.opencontrail.web.cache.get('engine', "false") == 'redis') %}
 include_redis:
 - zabbix.agent-redis
 {%- endif %}
@@ -227,7 +227,7 @@ zabbix_agent_service:
 {%- endif %}
 {%- endif %}
 {%- if (pillar.get('opencontrail', {}).web is defined) %}
-{%- if (pillar.opencontrail.web.get('engine', "false") == 'redis') %}
+{%- if (pillar.opencontrail.web.cache.get('engine', "false") == 'redis') %}
     - file: zabbix_agent_redis_config
     - file: zabbix_agent_redis_script
 {%- endif %}
