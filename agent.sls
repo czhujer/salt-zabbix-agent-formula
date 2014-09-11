@@ -139,7 +139,7 @@ zabbix_agent_check_pacemaker:
 
 {%- endif %}
 
-{%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined) or (pillar.get('opencontrail', {}).database.enabled == true)) %}
+{%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined) ) %}
 
 zabbix_agent_sudoers_file:
   file.managed:
