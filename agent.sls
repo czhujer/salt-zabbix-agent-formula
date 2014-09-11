@@ -154,7 +154,7 @@ zabbix_agent_sudoers_file:
 
 {%- endif %}
 
-{%- if ((pillar.get('pacemaker', {}).cluster is defined) or (pillar.get('opencontrail', "false").database.enabled == true)) %}
+{%- if ((pillar.get('pacemaker', {}).cluster is defined) or (pillar.get('opencontrail', {}).database.enabled is defined)) %}
 
 zabbix_agent_root_scripts:
   file.directory:
