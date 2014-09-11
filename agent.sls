@@ -179,26 +179,37 @@ zabbix_agent_crm_mon_stats:
 {%- endif %}
 
 {#
-# Contrail CassandraDB include
+# Contrail CassandraDB and redis include
 #}
+{%- if (pillar.get('opencontrail', {}).database is defined) and (pillar.get('opencontrail', {}).web is defined) %}
 
-{%- if (pillar.get('opencontrail', {}).database is defined) %}
+{%- if (pillar.opencontrail.database.get('enabled', "false") == true) and (pillar.opencontrail.web.cache.get('engine', "false") == 'redis') %}
+include:
+- zabbix.agent-cassandraDB
+- zabbix.agent-redis
+{%- endif %}
+
+{# ONLY Contrail CassandraDB include #}
+
+{%- elif (pillar.get('opencontrail', {}).database is defined) %}
 {%- if (pillar.opencontrail.database.get('enabled', "false") == true) %}
 include:
 - zabbix.agent-cassandraDB
 {%- endif %}
-{%- endif %}
 
-{#
-# Contrail redis include
-#}
+{# ONLY Contrail redis include #}
 
-{%- if (pillar.get('opencontrail', {}).web is defined) %}
+{%- elif (pillar.get('opencontrail', {}).web is defined) %}
 {%- if (pillar.opencontrail.web.cache.get('engine', "false") == 'redis') %}
 include:
 - zabbix.agent-redis
 {%- endif %}
 {%- endif %}
+
+{#
+#   END of Contrail includes
+#}
+
 
 zabbix_agent_service:
   service.running:
