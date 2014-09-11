@@ -24,7 +24,7 @@ zabbix_agent_redis_packages:
     - name: python-pip
 
 zabbix_agent_redis_m1:
-  pip.installed
+  pip.installed:
     - name: redis
     - require:
       - pkg: zabbix_agent_redis_packages
