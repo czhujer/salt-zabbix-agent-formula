@@ -213,6 +213,7 @@ zabbix_agent_service:
 {%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined)) %}
     - file: zabbix_agent_sudoers_file
 {%- endif %}
+{%- if (pillar.get('opencontrail', {}).database is defined) %}
 {%- if (pillar.opencontrail.database.get('enabled', "false") == true) %}
     - file: zabbix_agent_cassandra_config
     - file: zabbix_agent_cassandra_script1
@@ -221,6 +222,7 @@ zabbix_agent_service:
     - file: zabbix_agent_cassandra_m1
     - file: zabbix_agent_cassandra_m3
     - file: zabbix_agent_cassandra_m4
+{%- endif %}
 {%- endif %}
 
 {%- endif %}
