@@ -194,7 +194,7 @@ include:
 #}
 
 {%- if (pillar.get('opencontrail', {}).web is defined) %}
-{%- if (pillar.opencontrail.web.get('engine', "false") == redis) %}
+{%- if (pillar.opencontrail.web.get('engine', "false") == 'redis') %}
 include:
 - zabbix.agent-redis
 {%- endif %}
