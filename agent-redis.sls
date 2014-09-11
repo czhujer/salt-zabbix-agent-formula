@@ -19,3 +19,12 @@ zabbix_agent_redis_script:
   - require:
     - file: zabbix_agent_root_scripts
 
+zabbix_agent_redis_packages:
+  pkg.installed:
+    - name: python-pip
+
+zabbix_agent_redis_m1:
+  pip.installed:
+    - name: redis
+    - require:
+      - pkg: zabbix_agent_redis_packages
