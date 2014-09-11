@@ -139,7 +139,7 @@ zabbix_agent_check_pacemaker:
 
 {%- endif %}
 
-{%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined) or (pillar.opencontrail.database.get('enabled', "false") == true)) %}
+{%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined) or (pillar.get('opencontrail', {}).database is defined) or (pillar.get('opencontrail', {}).web is defined)) %}
 
 zabbix_agent_sudoers_file:
   file.managed:
@@ -154,7 +154,7 @@ zabbix_agent_sudoers_file:
 
 {%- endif %}
 
-{%- if ((pillar.get('pacemaker', {}).cluster is defined) or (pillar.opencontrail.database.get('enabled', "false") == true)) %}
+{%- if ((pillar.get('pacemaker', {}).cluster is defined) or (pillar.get('opencontrail', {}).database is defined)) %}
 
 zabbix_agent_root_scripts:
   file.directory:
@@ -179,13 +179,37 @@ zabbix_agent_crm_mon_stats:
 {%- endif %}
 
 {#
-# CassandraDB include
+# Contrail CassandraDB and redis include
 #}
+{%- if (pillar.get('opencontrail', {}).database is defined) and (pillar.get('opencontrail', {}).web is defined) %}
 
+{%- if (pillar.opencontrail.database.get('enabled', "false") == true) and (pillar.opencontrail.web.cache.get('engine', "false") == 'redis') %}
+include:
+- zabbix.agent-cassandraDB
+- zabbix.agent-redis
+{%- endif %}
+
+{# ONLY Contrail CassandraDB include #}
+
+{%- elif (pillar.get('opencontrail', {}).database is defined) %}
 {%- if (pillar.opencontrail.database.get('enabled', "false") == true) %}
 include:
 - zabbix.agent-cassandraDB
 {%- endif %}
+
+{# ONLY Contrail redis include #}
+
+{%- elif (pillar.get('opencontrail', {}).web is defined) %}
+{%- if (pillar.opencontrail.web.cache.get('engine', "false") == 'redis') %}
+include:
+- zabbix.agent-redis
+{%- endif %}
+{%- endif %}
+
+{#
+#   END of Contrail includes
+#}
+
 
 zabbix_agent_service:
   service.running:
@@ -202,6 +226,7 @@ zabbix_agent_service:
 {%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined)) %}
     - file: zabbix_agent_sudoers_file
 {%- endif %}
+{%- if (pillar.get('opencontrail', {}).database is defined) %}
 {%- if (pillar.opencontrail.database.get('enabled', "false") == true) %}
     - file: zabbix_agent_cassandra_config
     - file: zabbix_agent_cassandra_script1
@@ -210,6 +235,13 @@ zabbix_agent_service:
     - file: zabbix_agent_cassandra_m1
     - file: zabbix_agent_cassandra_m3
     - file: zabbix_agent_cassandra_m4
+{%- endif %}
+{%- endif %}
+{%- if (pillar.get('opencontrail', {}).web is defined) %}
+{%- if (pillar.opencontrail.web.cache.get('engine', "false") == 'redis') %}
+    - file: zabbix_agent_redis_config
+    - file: zabbix_agent_redis_script
+{%- endif %}
 {%- endif %}
 
 {%- endif %}
