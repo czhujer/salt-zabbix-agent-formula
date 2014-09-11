@@ -139,7 +139,7 @@ zabbix_agent_check_pacemaker:
 
 {%- endif %}
 
-{%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined) or (pillar.get('opencontrail', {}).database is defined)) %}
+{%- if ((pillar.get('keystone', {}) is defined) or (pillar.get('glance', {}) is defined) or (pillar.get('neutron', {}).server is defined) or (pillar.get('pacemaker', {}).cluster is defined) or (pillar.get('opencontrail', {}).database is defined) or (pillar.get('opencontrail', {}).web is defined)) %}
 
 zabbix_agent_sudoers_file:
   file.managed:
@@ -227,7 +227,7 @@ zabbix_agent_service:
 {%- endif %}
 {%- endif %}
 {%- if (pillar.get('opencontrail', {}).web is defined) %}
-{%- if (pillar.opencontrail.web.get('engine', "false") == redis) %}
+{%- if (pillar.opencontrail.web.get('engine', "false") == 'redis') %}
     - file: zabbix_agent_redis_config
     - file: zabbix_agent_redis_script
 {%- endif %}
