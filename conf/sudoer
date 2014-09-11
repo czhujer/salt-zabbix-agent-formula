@@ -12,6 +12,7 @@ zabbix  ALL=(ALL)       NOPASSWD: /srv/sensu/checks/check_galera_cluster *
 zabbix  ALL=(ALL)       NOPASSWD: /srv/sensu/checks/check_pacemaker_actions
 zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/crm_mon_stats.sh *
 {%- endif %}
+{%- if (pillar.get('opencontrail', {}).database is defined) %}
 {%- if (pillar.opencontrail.database.get('enabled', "false") == true) %}
 
 zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/cassandra.pl
@@ -19,4 +20,5 @@ zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/cassandra.pl
 zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/check_cassandra_nodes.pl *
 zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/check_cassandra_tpstats.pl *
 
+{%- endif %}
 {%- endif %}
