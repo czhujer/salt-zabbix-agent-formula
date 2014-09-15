@@ -27,3 +27,7 @@ zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/check_cassandra_tpstats.pl *
 zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/zbx_redis_stats.py *
 {%- endif %}
 {%- endif %}
+
+{%- if (pillar.get('opencontrail', {})is defined) %}
+zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/opencontrail_control.sh *
+{%- endif %}
