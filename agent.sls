@@ -11,7 +11,7 @@
 {% set zabbix_agent_config = '/etc/zabbix_agentd.conf' %}
 
 {% if version == '2' %}
-{% set zabbix_package_present = ['zabbix20-agent','bc'] %}
+{% set zabbix_package_present = ['zabbix20-agent', 'bc'] %}
 {% set zabbix_packages_absent = ['zabbix-agent', 'zabbix'] %}
 {% else %}
 {% set zabbix_package_present = 'zabbix-agent' %}
