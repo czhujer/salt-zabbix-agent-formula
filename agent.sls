@@ -269,7 +269,7 @@ zabbix_agent_service:
 {%- endif %}
 {%- endif %}
 {%- if (pillar.get('opencontrail', {})is defined) %}
-    - file: zabbix_agent_opencontrail_script
+    - file: zabbix_agent_opencontrail_script1
     - file: zabbix_agent_opencontrail_config
 {%- endif %}
 
