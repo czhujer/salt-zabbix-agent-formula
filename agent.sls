@@ -11,7 +11,7 @@
 {% set zabbix_agent_config = '/etc/zabbix_agentd.conf' %}
 
 {% if version == '2' %}
-{% set zabbix_package_present = 'zabbix20-agent' %}
+{% set zabbix_package_present = ['zabbix20-agent','bc'] %}
 {% set zabbix_packages_absent = ['zabbix-agent', 'zabbix'] %}
 {% else %}
 {% set zabbix_package_present = 'zabbix-agent' %}
@@ -210,6 +210,21 @@ include:
 #   END of Contrail includes
 #}
 
+
+{%- if (pillar.get('opencontrail', {})is defined) %}
+
+zabbix_agent_opencontrail_scripts1:
+  file.managed:
+  - name: /root/scripts/opencontrail_control.sh
+  - source: salt://zabbix/scripts/opencontrail_control.sh
+  - template: jinja
+  - user: root
+  - group: root
+  - mode: 755
+  - require:
+    - file: zabbix_agent_root_scripts
+
+{%- endif %}
 
 zabbix_agent_service:
   service.running:
