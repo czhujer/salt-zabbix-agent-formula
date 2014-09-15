@@ -24,24 +24,28 @@ part_oc() {
 {%- if pillar.get('opencontrail', {}) is defined %}
 
 {%- if (pillar.opencontrail.get('collector', false).enabled == true) %}
+
     service supervisor-analytics $action
 
     /usr/bin/supervisorctl -s http://localhost:9002 $action
 
 {%- endif %}
 {%- if (pillar.opencontrail.get('config', false).enabled == true) %}
+
     service supervisor-config $action
 
     /usr/bin/supervisorctl -s http://localhost:9004 $action
 
 {%- endif %}
 {%- if (pillar.opencontrail.get('control', false).enabled == true) %}
+
     service supervisor-control $action
 
     /usr/bin/supervisorctl -s http://localhost:9003 $action
 
 {%- endif %}
 {%- if (pillar.opencontrail.get('web', false).enabled == true) %}
+
     service supervisor-webui $action
 
     /usr/bin/supervisorctl -s http://localhost:9008 $action
