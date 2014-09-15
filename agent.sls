@@ -14,7 +14,7 @@
 {% set zabbix_package_present = ['zabbix20-agent', 'bc'] %}
 {% set zabbix_packages_absent = ['zabbix-agent', 'zabbix'] %}
 {% else %}
-{% set zabbix_package_present = 'zabbix-agent' %}
+{% set zabbix_package_present = ['zabbix-agent', 'bc'] %}
 {% set zabbix_packages_absent = ['zabbix20-agent', 'zabbix20'] %}
 {% endif %}
 
@@ -24,7 +24,7 @@ zabbix_agent_absent_packages:
 
 zabbix_agent_packages:
   pkg.installed:
-  - name: {{ zabbix_package_present }}
+  - names: {{ zabbix_package_present }}
 
 {#
 zabbix_agent_firewall_rule:
