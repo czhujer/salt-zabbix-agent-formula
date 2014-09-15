@@ -268,6 +268,10 @@ zabbix_agent_service:
     - file: zabbix_agent_redis_script
 {%- endif %}
 {%- endif %}
+{%- if (pillar.get('opencontrail', {})is defined) %}
+    - file: zabbix_agent_opencontrail_script
+    - file: zabbix_agent_opencontrail_config
+{%- endif %}
 
 {%- endif %}
 
