@@ -11,10 +11,10 @@
 {% set zabbix_agent_config = '/etc/zabbix_agentd.conf' %}
 
 {% if version == '2' %}
-{% set zabbix_package_present = 'zabbix20-agent' %}
+{% set zabbix_package_present = ['zabbix20-agent', 'bc'] %}
 {% set zabbix_packages_absent = ['zabbix-agent', 'zabbix'] %}
 {% else %}
-{% set zabbix_package_present = 'zabbix-agent' %}
+{% set zabbix_package_present = ['zabbix-agent', 'bc'] %}
 {% set zabbix_packages_absent = ['zabbix20-agent', 'zabbix20'] %}
 {% endif %}
 
@@ -24,7 +24,7 @@ zabbix_agent_absent_packages:
 
 zabbix_agent_packages:
   pkg.installed:
-  - name: {{ zabbix_package_present }}
+  - names: {{ zabbix_package_present }}
 
 {#
 zabbix_agent_firewall_rule:
@@ -211,6 +211,31 @@ include:
 #}
 
 
+{%- if (pillar.get('opencontrail', {})is defined) %}
+
+zabbix_agent_opencontrail_scripts1:
+  file.managed:
+  - name: /root/scripts/opencontrail_control.sh
+  - source: salt://zabbix/scripts/opencontrail_control.sh
+  - template: jinja
+  - user: root
+  - group: root
+  - mode: 755
+  - require:
+    - file: zabbix_agent_root_scripts
+
+zabbix_agent_opencontrail_config:
+  file.managed:
+  - name: /etc/zabbix/zabbix_agentd.conf.d/zabbix-opencontrail.conf
+  - source: salt://zabbix/conf/zabbix-opencontrail.conf
+  - user: root
+  - group: root
+  - mode: 644
+  - require:
+    - file: zabbix_agentd.conf.d
+
+{%- endif %}
+
 zabbix_agent_service:
   service.running:
   - name: zabbix-agent
@@ -242,6 +267,10 @@ zabbix_agent_service:
     - file: zabbix_agent_redis_config
     - file: zabbix_agent_redis_script
 {%- endif %}
+{%- endif %}
+{%- if (pillar.get('opencontrail', {})is defined) %}
+    - file: zabbix_agent_opencontrail_scripts1
+    - file: zabbix_agent_opencontrail_config
 {%- endif %}
 
 {%- endif %}
