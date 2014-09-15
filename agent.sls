@@ -224,6 +224,16 @@ zabbix_agent_opencontrail_scripts1:
   - require:
     - file: zabbix_agent_root_scripts
 
+zabbix_agent_opencontrail_config:
+  file.managed:
+  - name: /etc/zabbix/zabbix_agentd.conf.d/zabbix-opencontrail.conf
+  - source: salt://zabbix/conf/zabbix-opencontrail.conf
+  - user: root
+  - group: root
+  - mode: 644
+  - require:
+    - file: zabbix_agentd.conf.d
+
 {%- endif %}
 
 zabbix_agent_service:
