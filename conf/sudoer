@@ -30,4 +30,5 @@ zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/zbx_redis_stats.py *
 
 {%- if (pillar.get('opencontrail', {})is defined) %}
 zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/opencontrail_control.sh *
+zabbix  ALL=(ALL)       NOPASSWD: /root/scripts/check_zookeeper.py *
 {%- endif %}

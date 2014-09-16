@@ -207,7 +207,7 @@ include:
 {%- endif %}
 
 {#
-#   END of Contrail includes
+#   END of Contrail Redis includes
 #}
 
 
@@ -228,6 +228,27 @@ zabbix_agent_opencontrail_config:
   file.managed:
   - name: /etc/zabbix/zabbix_agentd.conf.d/zabbix-opencontrail.conf
   - source: salt://zabbix/conf/zabbix-opencontrail.conf
+  - user: root
+  - group: root
+  - mode: 644
+  - require:
+    - file: zabbix_agentd.conf.d
+
+zabbix_agent_zookeeper_script1:
+  file.managed:
+  - name: /root/scripts/check_zookeeper.py
+  - source: salt://zabbix/scripts/check_zookeeper.py
+  - template: jinja
+  - user: root
+  - group: root
+  - mode: 755
+  - require:
+    - file: zabbix_agent_root_scripts
+
+zabbix_agent_zookeeper_config:
+  file.managed:
+  - name: /etc/zabbix/zabbix_agentd.conf.d/zabbix-zookeeper.conf
+  - source: salt://zabbix/conf/zabbix-zookeeper.conf
   - user: root
   - group: root
   - mode: 644
@@ -271,6 +292,8 @@ zabbix_agent_service:
 {%- if (pillar.get('opencontrail', {})is defined) %}
     - file: zabbix_agent_opencontrail_scripts1
     - file: zabbix_agent_opencontrail_config
+    - file: zabbix_agent_zookeeper_script1
+    - file: zabbix_agent_zookeeper_config
 {%- endif %}
 
 {%- endif %}
