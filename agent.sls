@@ -255,6 +255,16 @@ zabbix_agent_zookeeper_config:
   - require:
     - file: zabbix_agentd.conf.d
 
+zabbix_agent_oc_named_config:
+  file.managed:
+  - name: /etc/zabbix/zabbix_agentd.conf.d/zabbix-opencontrail-named.conf
+  - source: salt://zabbix/conf/zabbix-opencontrail-named.conf
+  - user: root
+  - group: root
+  - mode: 644
+  - require:
+    - file: zabbix_agentd.conf.d
+
 {%- endif %}
 
 zabbix_agent_service:
@@ -294,6 +304,7 @@ zabbix_agent_service:
     - file: zabbix_agent_opencontrail_config
     - file: zabbix_agent_zookeeper_script1
     - file: zabbix_agent_zookeeper_config
+    - file: zabbix_agent_oc_named_config
 {%- endif %}
 
 {%- endif %}
